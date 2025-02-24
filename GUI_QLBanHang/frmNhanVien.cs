@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BUS_QLBanHang;
@@ -290,16 +291,19 @@ namespace TemplateProject1_QLBanHang
 
         public void BtnSua_Click(object sender, EventArgs e)
         {
+            string tenKhach = txtTennv.Text.Trim();
+            Regex regexTen = new Regex(@"^[A-ZÀ-Ỹ][a-zà-ỹ]*(\s[A-ZÀ-Ỹ][a-zà-ỹ]*)*$");
             if (txtTennv.Text.Trim().Length == 0)// kiem tra phai nhap data
             {
                 MessageBox.Show("Bạn phải nhập tên nhân viên", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtTennv.Focus();
                 return;
             }
-            else if (txtDiachi.Text.Trim().Length == 0)
+            if (!regexTen.IsMatch(tenKhach) || tenKhach.Length < 2 || tenKhach.Length > 50)
             {
-                MessageBox.Show("Bạn phải nhập địa chỉ", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtDiachi.Focus();
+                MessageBox.Show("Tên khách hàng không hợp lệ!\nTên chỉ chứa chữ cái, viết hoa chữ đầu, từ 2 đến 50 ký tự.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+               txtTennv.Focus();
                 return;
             }
             else

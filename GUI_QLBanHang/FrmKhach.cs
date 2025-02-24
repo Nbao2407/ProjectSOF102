@@ -99,20 +99,26 @@ namespace TemplateProject1_QLBanHang
         private void BtnLuu_Click(object sender, EventArgs e)
         {
             long intDienThoai;
-            bool isInt = long.TryParse(txtDienthoai.Text.Trim(), out intDienThoai); 
-
-            string phai = rbnu.Checked ? "Nữ" : "Nam"; 
-
+            bool isInt = long.TryParse(txtDienthoai.Text.Trim(), out intDienThoai);
+            string tenKhach = txtTenkhach.Text.Trim();
+            string phai = rbnu.Checked ? "Nữ" : "Nam";
+            Regex regexTen = new Regex(@"^[A-ZÀ-Ỹ][a-zà-ỹ]*(\s[A-ZÀ-Ỹ][a-zà-ỹ]*)*$");
             if (string.IsNullOrWhiteSpace(txtDienthoai.Text) || string.IsNullOrWhiteSpace(txtTenkhach.Text) || string.IsNullOrWhiteSpace(txtDiachi.Text))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin (Điện thoại, Tên khách, Địa chỉ).", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (!isInt || intDienThoai < 0)
+            if (!isInt || intDienThoai <= 0 || txtDienthoai.Text.Trim().Length < 10 || txtDienthoai.Text.Trim().Length > 11)
             {
-                MessageBox.Show("Bạn phải nhập số điện thoại hợp lệ (>0) và là số nguyên.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Số điện thoại phải là số nguyên dương 11 chữ số!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtDienthoai.Focus();
+                return;
+            }
+            if (!regexTen.IsMatch(tenKhach) || tenKhach.Length < 2 || tenKhach.Length > 50)
+            {
+                MessageBox.Show("Tên khách hàng không hợp lệ!\nTên chỉ chứa chữ cái, viết hoa chữ đầu, từ 2 đến 50 ký tự.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenkhach.Focus();
                 return;
             }
             else
@@ -162,16 +168,26 @@ namespace TemplateProject1_QLBanHang
 
         private void BtnSua_Click(object sender, EventArgs e)
         {
+            Regex regexTen = new Regex(@"^[A-ZÀ-Ỹ][a-zà-ỹ]*(\s[A-ZÀ-Ỹ][a-zà-ỹ]*)*$");
+            string tenKhach = txtTenkhach.Text.Trim();
 
-            float intDienThoai;
-            bool isInt = float.TryParse(txtDienthoai.Text.Trim().ToString(), out intDienThoai);//ep kiểu để kiểm tra là số hay chữ
+            long intDienThoai;
+            bool isInt = long.TryParse(txtDienthoai.Text.Trim(), out intDienThoai);
             string phai = "Nam";
             if (rbnu.Checked == true)
                 phai = "Nữ";
-            if (!isInt || float.Parse(txtDienthoai.Text) < 0)// kiem tra so điện thoại
+
+            if (!isInt || intDienThoai <= 0 || txtDienthoai.Text.Trim().Length < 10 || txtDienthoai.Text.Trim().Length > 11)
             {
-                MessageBox.Show("Bạn phải nhập số điện thoại >0, số nguyên", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Số điện thoại phải là số nguyên dương 11 chữ số!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtDienthoai.Focus();
+                return;
+            }
+            if (!regexTen.IsMatch(tenKhach) || tenKhach.Length < 2 || tenKhach.Length > 50)
+            {
+                MessageBox.Show("Tên khách hàng không hợp lệ!\nTên chỉ chứa chữ cái, viết hoa chữ đầu, từ 2 đến 50 ký tự.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenkhach.Focus();
                 return;
             }
             else

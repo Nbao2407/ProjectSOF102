@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BUS_QLBanHang;
@@ -256,11 +257,20 @@ namespace TemplateProject1_QLBanHang
             bool isFloatNhap = float.TryParse(txtDongianhap.Text.Trim(), out floatDonGiaNhap);
             float floatDonGiaBan;
             bool isFloatBan = float.TryParse(txtDongiaban.Text.Trim(), out floatDonGiaBan);
+            string tenKhach = txtTenhang.Text.Trim();
 
+            Regex regexTen = new Regex(@"^[A-ZÀ-Ỹ][a-zà-ỹ]*(\s[A-ZÀ-Ỹ][a-zà-ỹ]*)*$");
             // Validation checks
             if (txtTenhang.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Bạn phải nhập tên sản phẩm", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtTenhang.Focus();
+                return;
+            }
+            if (!regexTen.IsMatch(tenKhach) || tenKhach.Length < 2 || tenKhach.Length > 50)
+            {
+                MessageBox.Show("Tên khách hàng không hợp lệ!\nTên chỉ chứa chữ cái, viết hoa chữ đầu, từ 2 đến 50 ký tự.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtTenhang.Focus();
                 return;
             }
@@ -355,6 +365,11 @@ namespace TemplateProject1_QLBanHang
         }
 
         private void pbHinh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
         }

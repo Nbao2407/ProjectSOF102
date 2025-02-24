@@ -82,7 +82,7 @@ namespace UTkhach
 
             // Act
             var result = busKhach.SearchKhach(soDT);
-
+           
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Rows.Count, "Dữ liệu trả về không rỗng mặc dù không có khách hàng với số điện thoại này.");
